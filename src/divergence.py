@@ -108,3 +108,19 @@ def generate_hypotheses(problem: str):
     ]
 
     return hypotheses
+
+from src.local_hypothesis import generate_local_hypotheses
+from src.hypothesis_validator import validate_hypotheses
+
+
+def generate_hypotheses_local(problem: str):
+    """
+    Generate hypotheses using the local AI-style generator
+    and validate their structure and distinctness.
+    """
+
+    generated = generate_local_hypotheses(problem)
+
+    validated = validate_hypotheses(generated)
+
+    return validated

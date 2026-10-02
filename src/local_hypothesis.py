@@ -285,17 +285,4 @@ def generate_local_hypotheses(problem: str):
         )
     )
 
-    # Reassign IDs safely
-    known_hypotheses = [
-        hypothesis
-        for hypothesis in hypotheses
-        if hypothesis.id != "UNKNOWN"
-    ]
-
-    for index, hypothesis in enumerate(known_hypotheses, start=1):
-        hypothesis.id = f"H{index}"
-
-    return known_hypotheses + [
-        hypothesis for hypothesis in hypotheses
-        if hypothesis.id == "UNKNOWN"
-    ]
+    return hypotheses

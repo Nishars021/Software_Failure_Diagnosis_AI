@@ -1,4 +1,4 @@
-from src.divergence import generate_hypotheses
+from src.divergence import generate_hypotheses_local
 from src.evidence import Evidence, assess_evidence
 from src.scoring import calculate_hypothesis_score
 from src.stopping import should_stop
@@ -17,7 +17,7 @@ def diagnose(problem, evidence_list):
     # --------------------------------------------------
     # 1. Generate hypotheses
     # --------------------------------------------------
-    hypotheses = generate_hypotheses(problem)
+    hypotheses = generate_hypotheses_local(problem)
 
     print("\nGenerated Hypotheses:")
     for h in hypotheses:
