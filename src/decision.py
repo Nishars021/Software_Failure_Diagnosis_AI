@@ -1,0 +1,157 @@
+from dataclasses import dataclass
+from typing import List
+
+from src.scoring import HypothesisScore
+
+
+@dataclass
+class Decision:
+    outcome: str
+    selected_hypotheses: List[str]
+    explanation: str
+
+
+def make_decision(
+    scores: List[HypothesisScore]
+) -> Decision:
+
+    if not scores:
+        return Decision(
+            outcome="ABSTAIN",
+            selected_hypotheses=[],
+            explanation="No hypotheses were available for evaluation."
+        )
+
+    # Ignore UNKNOWN when comparing normal hypotheses
+    valid_scores = [
+        score for score in scores
+        if score.hypothesis_id != "UNKNOWN"
+    ]
+
+    if not valid_scores:
+        return Decision(
+            outcome="ABSTAIN",
+            selected_hypotheses=[],
+            explanation="No supported explanation is currently available."
+        )
+
+    # Sort hypotheses by confidence
+    ranked = sorted(
+        valid_scores,
+        key=lambda x: x.confidence,
+        reverse=True
+    )
+
+    best = ranked[0]
+
+    # Case 1: Strong single hypothesis
+    if best.confidence >= 75:
+
+        if len(ranked) == 1:
+            return Decision(
+                outcome="SELECT",
+                selected_hypotheses=[best.hypothesis_id],
+                explanation=(
+                    f"{best.hypothesis_id} has strong supporting evidence "
+                    f"with {best.confidence:.2f}% confidence."
+                )
+            )
+
+        second = ranked[1]
+
+        if best.confidence - second.confidence >= 15:
+            return Decision(
+                outcome="SELECT",
+                selected_hypotheses=[best.hypothesis_id],
+                explanation=(
+                    f"{best.hypothesis_id} is substantially better "
+                    f"supported than the other hypotheses."
+                )
+            )
+
+    # Case 2: Two hypotheses are close
+    if len(ranked) >= 2:
+
+        second = ranked[1]
+        difference = abs(
+            best.confidence - second.confidence
+        )
+
+        if difference <= 10:
+            return Decision(
+                outcome="TEST",
+                selected_hypotheses=[
+                    best.hypothesis_id,
+                    second.hypothesis_id
+                ],
+                explanation=(
+                    f"{best.hypothesis_id} and {second.hypothesis_id} "
+                    f"remain difficult to distinguish. "
+                    f"A discriminating test is recommended."
+                )
+            )
+
+    # Case 3: Nothing is sufficiently supported
+    return Decision(
+        outcome="ABSTAIN",
+        selected_hypotheses=[],
+        explanation=(
+            "The available evidence is insufficient to make "
+            "a reliable selection."
+        )
+    )
+
+def are_compatible(h1, h2) -> bool:
+    """
+    Determine whether two hypotheses can potentially
+    be true at the same time.
+
+    V0.1 uses a simple rule-based approach.
+    """
+
+    cause_1 = h1.cause.lower()
+    cause_2 = h2.cause.lower()
+
+    # Clearly incompatible pairs
+    incompatible_pairs = [
+        ("database failure", "database healthy"),
+        ("recent deployment", "no recent deployment"),
+    ]
+
+    for cause_a, cause_b in incompatible_pairs:
+        if (
+            (cause_a in cause_1 and cause_b in cause_2)
+            or
+            (cause_b in cause_1 and cause_a in cause_2)
+        ):
+            return False
+
+    # By default, different causes are considered
+    # potentially compatible.
+    return True
+
+def synthesize_hypotheses(h1, h2, score1, score2) -> Decision:
+    """
+    Combine two compatible hypotheses when both have
+    meaningful supporting evidence.
+    """
+
+    if not are_compatible(h1, h2):
+        return Decision(
+            outcome="TEST",
+            selected_hypotheses=[h1.id, h2.id],
+            explanation=(
+                f"{h1.id} and {h2.id} appear incompatible, "
+                "so a discriminating test is required."
+            )
+        )
+
+    return Decision(
+        outcome="COMBINE",
+        selected_hypotheses=[h1.id, h2.id],
+        explanation=(
+            f"{h1.id} and {h2.id} are compatible and both "
+            f"have supporting evidence. Together they may "
+            f"provide a stronger explanation of the failure."
+        )
+    )
