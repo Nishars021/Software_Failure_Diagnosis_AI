@@ -107,9 +107,11 @@ def run_evaluation():
         ) * 100
     else:
         selective_accuracy = 0
-        brier_score = calculate_brier_score(
-            calibration_predictions
-        )
+
+    # Brier score
+    brier_score = calculate_brier_score(
+        calibration_predictions
+    )
 
     
     print("\n" + "=" * 60)
