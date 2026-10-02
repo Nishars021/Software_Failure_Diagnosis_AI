@@ -1,4 +1,4 @@
-from hypothesis import Hypothesis
+from src.hypothesis import Hypothesis
 
 
 def generate_hypotheses(problem: str):
