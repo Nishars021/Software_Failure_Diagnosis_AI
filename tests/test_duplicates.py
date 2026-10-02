@@ -19,15 +19,18 @@ h1 = Hypothesis(
 
 h2 = Hypothesis(
     id="H2",
-    cause="Database failure",
+    cause="Recent software deployment",
     assumptions=[
-        "Application depends on database"
+        "A new version was deployed recently",
+        "The deployment may contain a defect"
     ],
     predicted_effects=[
-        "Database connection errors"
+        "Failures begin after deployment",
+        "Errors appear in the new version"
     ],
     required_evidence=[
-        "Database logs"
+        "Deployment history",
+        "Application version information"
     ]
 )
 
