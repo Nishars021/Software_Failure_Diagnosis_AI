@@ -258,10 +258,18 @@ def assess_evidence(
         ]
 
         contradicting_keywords = [
-            "configuration is correct",
-            "configuration is normal",
-            "environment configuration is correct",
-            "environment configuration is normal"
+            "database healthy",
+            "database is healthy",
+            "database normal",
+            "database operational",
+            "database health check is normal",
+            "database health check normal",
+            "health check is normal",
+            "health check normal",
+            "no database failure",
+            "no recent database failure",
+            "database failure was not detected",
+            "no database error"
         ]
 
         if any(word in description for word in supporting_keywords):
