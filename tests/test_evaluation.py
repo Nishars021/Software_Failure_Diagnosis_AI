@@ -19,6 +19,7 @@ def run_evaluation():
     abstained = 0
 
     results = []
+    calibration_predictions = []
 
     print("\n" + "=" * 60)
     print("SOFTWARE FAILURE DIAGNOSIS EVALUATION")
@@ -55,7 +56,23 @@ def run_evaluation():
         expected = case["expected_cause"]
 
         is_correct = predicted == expected
+        # Get confidence of the selected hypothesis
+        confidence = 0
 
+        if decision.selected_hypotheses:
+
+            selected_id = decision.selected_hypotheses[0]
+
+            for score in result["scores"]:
+
+                if score.hypothesis_id == selected_id:
+                    confidence = score.confidence
+                    break
+
+        calibration_predictions.append(
+            (confidence, is_correct)
+        )
+        
         if is_correct:
             correct += 1
 
@@ -90,8 +107,11 @@ def run_evaluation():
         ) * 100
     else:
         selective_accuracy = 0
+        brier_score = calculate_brier_score(
+            calibration_predictions
+        )
 
-
+    
     print("\n" + "=" * 60)
     print("FINAL EVALUATION")
     print("=" * 60)
@@ -105,6 +125,10 @@ def run_evaluation():
         f"Selective accuracy: "
         f"{selective_accuracy:.2f}%"
     )
+    print(
+        f"Brier score:       "
+        f"{brier_score:.4f}"
+        )
     return results
 
 
