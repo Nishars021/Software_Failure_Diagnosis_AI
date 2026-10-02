@@ -5,18 +5,12 @@ Software Failure Diagnosis
 
 ## Problem
 
-Software applications can fail or experience performance problems for
-many different reasons. A single failure may have multiple plausible
-causes, and choosing one explanation too early can lead to incorrect
-diagnosis.
+Software applications can fail or experience performance problems for many different reasons. A single failure may have multiple plausible causes, and choosing one explanation too early can lead to incorrect diagnosis.
 
 ## Goal
 
-Build an evidence-grounded reasoning system that investigates software
-failures by generating genuinely different possible causes, evaluating
-evidence for and against each hypothesis, identifying missing information,
-and recommending further diagnostic actions when the available evidence
-is insufficient.
+Build an evidence-grounded reasoning system that investigates software failures by generating genuinely different possible causes, evaluating
+evidence for and against each hypothesis, identifying missing information, and recommending further diagnostic actions when the available evidence is insufficient.
 
 ## Initial Failure Types
 
