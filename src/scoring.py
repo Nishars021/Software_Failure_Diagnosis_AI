@@ -73,3 +73,49 @@ def calculate_hypothesis_score(
         raw_score=raw_score,
         confidence=confidence
     )
+
+def update_hypothesis_score(
+    previous_score: HypothesisScore,
+    new_assessment: EvidenceAssessment
+) -> HypothesisScore:
+
+    supporting_weight = previous_score.supporting_weight
+    contradicting_weight = previous_score.contradicting_weight
+    independent_evidence_count = previous_score.independent_evidence_count
+
+    evidence = new_assessment.evidence
+
+    # Don't add dependent evidence as an independent confirmation
+    if new_assessment.evidence_type == EvidenceType.DEPENDENT:
+        return previous_score
+
+    # Add the new evidence according to its type
+    if new_assessment.evidence_type == EvidenceType.SUPPORTING:
+        supporting_weight += evidence.reliability
+        independent_evidence_count += 1
+
+    elif new_assessment.evidence_type == EvidenceType.CONTRADICTING:
+        contradicting_weight += evidence.reliability
+        independent_evidence_count += 1
+
+    total_weight = supporting_weight + contradicting_weight
+
+    if total_weight == 0:
+        raw_score = 0.0
+        confidence = 0.0
+    else:
+        raw_score = supporting_weight - contradicting_weight
+
+        confidence = (
+            (raw_score + total_weight)
+            / (2 * total_weight)
+        ) * 100
+
+    return HypothesisScore(
+        hypothesis_id=previous_score.hypothesis_id,
+        supporting_weight=supporting_weight,
+        contradicting_weight=contradicting_weight,
+        independent_evidence_count=independent_evidence_count,
+        raw_score=raw_score,
+        confidence=confidence
+    )

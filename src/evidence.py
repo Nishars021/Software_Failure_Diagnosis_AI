@@ -59,7 +59,11 @@ def assess_evidence(
             "database healthy",
             "database is healthy",
             "database normal",
-            "database operational"
+            "database operational",
+            "database health check is normal",
+            "database health check normal",
+            "health check is normal",
+            "health check normal"
         ]):
             return EvidenceAssessment(
                 evidence=evidence,
