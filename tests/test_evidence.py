@@ -19,7 +19,7 @@ hypothesis = Hypothesis(
 
 evidence = Evidence(
     id="E1",
-    description="Database connection timeout detected",
+    description="Database health check is normal",
     source="Application logs",
     source_id="APP_LOG_001",
     reliability=0.95
