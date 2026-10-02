@@ -107,5 +107,145 @@
         "reliability": 0.8
       }
     ]
-  }
+  },
+
+  {
+  "case_id": "TC006",
+  "problem": "The application started failing after a new release was deployed.",
+  "expected_cause": "H2",
+  "evidence": [
+    {
+      "id": "E1",
+      "description": "New version was deployed recently",
+      "source": "Deployment system",
+      "source_id": "DEP002",
+      "reliability": 0.95
+    },
+    {
+      "id": "E2",
+      "description": "Database health check is normal",
+      "source": "Database monitoring",
+      "source_id": "DB002",
+      "reliability": 0.9
+    }
+  ]
+},
+
+{
+  "case_id": "TC007",
+  "problem": "The application is running out of memory and becoming unavailable.",
+  "expected_cause": "H3",
+  "evidence": [
+    {
+      "id": "E1",
+      "description": "Server memory usage is extremely high",
+      "source": "Server monitoring",
+      "source_id": "SRV003",
+      "reliability": 0.95
+    },
+    {
+      "id": "E2",
+      "description": "Server CPU usage is extremely high",
+      "source": "Server monitoring",
+      "source_id": "SRV004",
+      "reliability": 0.9
+    }
+  ]
+},
+
+{
+  "case_id": "TC008",
+  "problem": "Customer data cannot be retrieved from the external service.",
+  "expected_cause": "H4",
+  "evidence": [
+    {
+      "id": "E1",
+      "description": "External API health check failed",
+      "source": "API monitoring",
+      "source_id": "API002",
+      "reliability": 0.95
+    },
+    {
+      "id": "E2",
+      "description": "Database health check is normal",
+      "source": "Database monitoring",
+      "source_id": "DB003",
+      "reliability": 0.9
+    }
+  ]
+},
+
+{
+  "case_id": "TC009",
+  "problem": "The application cannot start in the production environment.",
+  "expected_cause": "H5",
+  "evidence": [
+    {
+      "id": "E1",
+      "description": "Environment configuration is incorrect",
+      "source": "Configuration system",
+      "source_id": "CFG002",
+      "reliability": 0.95
+    },
+    {
+      "id": "E2",
+      "description": "Database health check is normal",
+      "source": "Database monitoring",
+      "source_id": "DB004",
+      "reliability": 0.9
+    }
+  ]
+},
+
+{
+  "case_id": "TC010",
+  "problem": "The application is returning HTTP 500 errors.",
+  "expected_cause": "UNKNOWN",
+  "evidence": [
+    {
+      "id": "E1",
+      "description": "DNS resolution is failing",
+      "source": "Network monitoring",
+      "source_id": "NET001",
+      "reliability": 0.95
+    },
+    {
+      "id": "E2",
+      "description": "DNS service is unavailable",
+      "source": "Network monitoring",
+      "source_id": "NET002",
+      "reliability": 0.9
+    }
+  ]
+},
+
+{
+  "case_id": "TC011",
+  "problem": "The application occasionally fails authentication requests.",
+  "expected_cause": "UNKNOWN",
+  "evidence": [
+    {
+      "id": "E1",
+      "description": "Authentication service is unavailable",
+      "source": "Authentication monitoring",
+      "source_id": "AUTH001",
+      "reliability": 0.95
+    }
+  ]
+},
+
+{
+  "case_id": "TC012",
+  "problem": "The application is showing intermittent failures but there is not enough diagnostic information.",
+  "expected_cause": "UNKNOWN",
+  "evidence": [
+    {
+      "id": "E1",
+      "description": "No clear failure signal was detected",
+      "source": "Application monitoring",
+      "source_id": "APP001",
+      "reliability": 0.5
+    }
+  ]
+ }
 ]
