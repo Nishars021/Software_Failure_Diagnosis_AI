@@ -81,6 +81,17 @@ def run_evaluation():
 
     abstention_rate = (abstained / total) * 100
 
+    # Selective accuracy
+    non_abstained = total - abstained
+
+    if non_abstained > 0:
+        selective_accuracy = (
+            correct / non_abstained
+        ) * 100
+    else:
+        selective_accuracy = 0
+
+
     print("\n" + "=" * 60)
     print("FINAL EVALUATION")
     print("=" * 60)
@@ -90,7 +101,10 @@ def run_evaluation():
     print(f"Accuracy:          {accuracy:.2f}%")
     print(f"Abstained cases:   {abstained}")
     print(f"Abstention rate:   {abstention_rate:.2f}%")
-
+    print(
+        f"Selective accuracy: "
+        f"{selective_accuracy:.2f}%"
+    )
     return results
 
 
