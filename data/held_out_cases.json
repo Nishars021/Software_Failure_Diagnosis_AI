@@ -1,0 +1,119 @@
+[
+  {
+    "case_id": "HO001",
+    "problem": "The application is failing because it cannot connect to the customer database.",
+    "expected_cause": "H1",
+    "evidence": [
+      {
+        "id": "E1",
+        "description": "Database connection timeout detected",
+        "source": "Application logs",
+        "source_id": "HO_DB_001",
+        "reliability": 0.95
+      },
+      {
+        "id": "E2",
+        "description": "Database health check is normal",
+        "source": "Database monitoring",
+        "source_id": "HO_DB_002",
+        "reliability": 0.8
+      }
+    ]
+  },
+
+  {
+    "case_id": "HO002",
+    "problem": "The website began returning errors immediately after the latest release.",
+    "expected_cause": "H2",
+    "evidence": [
+      {
+        "id": "E1",
+        "description": "A new version was deployed recently",
+        "source": "Deployment system",
+        "source_id": "HO_DEP_001",
+        "reliability": 0.95
+      },
+      {
+        "id": "E2",
+        "description": "No recent database failure was detected",
+        "source": "Database monitoring",
+        "source_id": "HO_DB_003",
+        "reliability": 0.8
+      }
+    ]
+  },
+
+  {
+    "case_id": "HO003",
+    "problem": "The application has become extremely slow under normal traffic.",
+    "expected_cause": "H3",
+    "evidence": [
+      {
+        "id": "E1",
+        "description": "Server CPU usage is extremely high",
+        "source": "Server monitoring",
+        "source_id": "HO_SRV_001",
+        "reliability": 0.95
+      },
+      {
+        "id": "E2",
+        "description": "Server memory usage is extremely high",
+        "source": "Server monitoring",
+        "source_id": "HO_SRV_002",
+        "reliability": 0.9
+      }
+    ]
+  },
+
+  {
+    "case_id": "HO004",
+    "problem": "The application cannot obtain information from a partner service.",
+    "expected_cause": "H4",
+    "evidence": [
+      {
+        "id": "E1",
+        "description": "External API health check failed",
+        "source": "API monitoring",
+        "source_id": "HO_API_001",
+        "reliability": 0.95
+      }
+    ]
+  },
+
+  {
+    "case_id": "HO005",
+    "problem": "The application fails during startup after environment variables were changed.",
+    "expected_cause": "H5",
+    "evidence": [
+      {
+        "id": "E1",
+        "description": "Environment configuration is incorrect",
+        "source": "Configuration system",
+        "source_id": "HO_CFG_001",
+        "reliability": 0.95
+      }
+    ]
+  },
+
+  {
+    "case_id": "HO006",
+    "problem": "The application is unavailable because of a network name-resolution problem.",
+    "expected_cause": "UNKNOWN",
+    "evidence": [
+      {
+        "id": "E1",
+        "description": "DNS resolution is failing",
+        "source": "Network monitoring",
+        "source_id": "HO_NET_001",
+        "reliability": 0.95
+      },
+      {
+        "id": "E2",
+        "description": "DNS service is unavailable",
+        "source": "Network monitoring",
+        "source_id": "HO_NET_002",
+        "reliability": 0.9
+      }
+    ]
+  }
+]

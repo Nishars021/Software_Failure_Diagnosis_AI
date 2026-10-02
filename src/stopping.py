@@ -9,10 +9,11 @@ def should_stop(
     budget: InvestigationBudget
 ) -> tuple[bool, str]:
 
-    # Rule 1: Budget exhausted
+    # 1. Check investigation rounds
     if budget.budget_exhausted():
         return True, "Investigation budget exhausted."
 
+    # 2. Remove UNKNOWN from normal ranking
     valid_scores = [
         score
         for score in scores
@@ -22,6 +23,7 @@ def should_stop(
     if not valid_scores:
         return True, "No usable hypotheses remain."
 
+    # 3. Rank hypotheses
     ranked = sorted(
         valid_scores,
         key=lambda x: x.confidence,
@@ -30,25 +32,41 @@ def should_stop(
 
     best = ranked[0]
 
-    # Rule 2: Strong winner
+    # 4. Insufficient evidence comes BEFORE tie checking
+    if best.confidence < 50:
+        return True, (
+            "Available evidence is insufficient "
+            "to support any known hypothesis."
+        )
+
+    # 5. Strong hypothesis
     if best.confidence >= 75:
+
         if len(ranked) == 1:
-            return True, "A strong hypothesis has been identified."
+            return True, (
+                "A strong hypothesis has been identified."
+            )
 
         second = ranked[1]
 
         if best.confidence - second.confidence >= 15:
-            return True, "A strong hypothesis clearly leads."
+            return True, (
+                "A strong hypothesis clearly leads."
+            )
 
-    # Rule 3: Close hypotheses
+    # 6. Close hypotheses
     if len(ranked) >= 2:
+
         second = ranked[1]
 
-        if abs(best.confidence - second.confidence) <= 10:
-            return True, "Top hypotheses remain difficult to distinguish."
+        if abs(
+            best.confidence - second.confidence
+        ) <= 10:
 
-    # Rule 4: No hypothesis has enough support
-    if best.confidence < 50:
-        return True, "Available evidence is insufficient."
+            return True, (
+                "Top hypotheses remain difficult "
+                "to distinguish."
+            )
 
+    # 7. Continue investigation
     return False, "Investigation can continue."

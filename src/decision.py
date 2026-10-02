@@ -32,10 +32,13 @@ def make_decision(
         return Decision(
             outcome="ABSTAIN",
             selected_hypotheses=[],
-            explanation="No supported explanation is currently available."
+            explanation=(
+                "No known hypothesis has sufficient supporting evidence. "
+                "The cause may be unknown."
+            )
         )
 
-    # Sort hypotheses by confidence
+    # Sort by confidence
     ranked = sorted(
         valid_scores,
         key=lambda x: x.confidence,
@@ -44,22 +47,49 @@ def make_decision(
 
     best = ranked[0]
 
-    # Case 1: Strong single hypothesis
+    # --------------------------------------------------
+    # CASE 1: Evidence is too weak
+    # --------------------------------------------------
+    # IMPORTANT:
+    # Check this BEFORE the tie condition.
+    #
+    # Otherwise two weak hypotheses such as
+    # H1 = 10% and H2 = 8%
+    # would incorrectly produce TEST.
+    # --------------------------------------------------
+
+    if best.confidence < 50:
+
+        return Decision(
+            outcome="ABSTAIN",
+            selected_hypotheses=[],
+            explanation=(
+                "None of the known hypotheses has sufficient "
+                "supporting evidence. The cause may be unknown."
+            )
+        )
+
+    # --------------------------------------------------
+    # CASE 2: Strong single hypothesis
+    # --------------------------------------------------
+
     if best.confidence >= 75:
 
         if len(ranked) == 1:
+
             return Decision(
                 outcome="SELECT",
                 selected_hypotheses=[best.hypothesis_id],
                 explanation=(
-                    f"{best.hypothesis_id} has strong supporting evidence "
-                    f"with {best.confidence:.2f}% confidence."
+                    f"{best.hypothesis_id} has strong supporting "
+                    f"evidence with {best.confidence:.2f}% confidence."
                 )
             )
 
         second = ranked[1]
 
         if best.confidence - second.confidence >= 15:
+
             return Decision(
                 outcome="SELECT",
                 selected_hypotheses=[best.hypothesis_id],
@@ -69,15 +99,20 @@ def make_decision(
                 )
             )
 
-    # Case 2: Two hypotheses are close
+    # --------------------------------------------------
+    # CASE 3: Two reasonably supported hypotheses are close
+    # --------------------------------------------------
+
     if len(ranked) >= 2:
 
         second = ranked[1]
+
         difference = abs(
             best.confidence - second.confidence
         )
 
         if difference <= 10:
+
             return Decision(
                 outcome="TEST",
                 selected_hypotheses=[
@@ -91,7 +126,10 @@ def make_decision(
                 )
             )
 
-    # Case 3: Nothing is sufficiently supported
+    # --------------------------------------------------
+    # CASE 4: Evidence is not strong enough
+    # --------------------------------------------------
+
     return Decision(
         outcome="ABSTAIN",
         selected_hypotheses=[],

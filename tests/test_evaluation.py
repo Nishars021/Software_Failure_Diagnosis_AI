@@ -55,7 +55,13 @@ def run_evaluation():
 
         expected = case["expected_cause"]
 
-        is_correct = predicted == expected
+        if expected == "UNKNOWN":
+            is_correct = (
+                predicted is None
+                and decision.outcome == "ABSTAIN"
+            )
+        else:
+            is_correct = predicted == expected
         # Get confidence of the selected hypothesis
         confidence = 0
 

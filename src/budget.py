@@ -30,8 +30,12 @@ class InvestigationBudget:
         self.evidence_checks_used += 1
 
     def budget_exhausted(self) -> bool:
-        return (
-            self.hypotheses_generated >= self.max_hypotheses
-            or self.rounds_used >= self.max_rounds
-            or self.evidence_checks_used >= self.max_evidence_checks
-        )
+        """
+        The investigation should stop only when the
+        actual investigation rounds are exhausted.
+
+        Reaching the maximum number of hypotheses or
+        evidence checks means we cannot expand further,
+        but it does not mean the current diagnosis failed.
+        """
+        return self.rounds_used >= self.max_rounds
