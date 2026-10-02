@@ -2,7 +2,7 @@ import json
 
 from src.main import diagnose
 from src.evidence import Evidence
-
+from tests.test_calibration import calculate_brier_score
 
 def load_test_cases():
 
