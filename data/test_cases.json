@@ -1,0 +1,111 @@
+[
+  {
+    "case_id": "TC001",
+    "problem": "The web application suddenly started returning HTTP 500 errors.",
+    "expected_cause": "H1",
+    "evidence": [
+      {
+        "id": "E1",
+        "description": "Database connection timeout detected",
+        "source": "Application logs",
+        "source_id": "LOG001",
+        "reliability": 0.9
+      },
+      {
+        "id": "E2",
+        "description": "Database health check is normal",
+        "source": "Database monitoring",
+        "source_id": "DB001",
+        "reliability": 0.8
+      }
+    ]
+  },
+
+  {
+    "case_id": "TC002",
+    "problem": "The application started failing immediately after a new release.",
+    "expected_cause": "Recent software deployment",
+    "evidence": [
+      {
+        "id": "E1",
+        "description": "New version was deployed 5 minutes ago",
+        "source": "Deployment system",
+        "source_id": "DEP001",
+        "reliability": 0.95
+      },
+      {
+        "id": "E2",
+        "description": "Database health check is normal",
+        "source": "Database monitoring",
+        "source_id": "DB001",
+        "reliability": 0.9
+      }
+    ]
+  },
+
+  {
+    "case_id": "TC003",
+    "problem": "The web server is responding extremely slowly.",
+    "expected_cause": "Server/resource problem",
+    "evidence": [
+      {
+        "id": "E1",
+        "description": "Server CPU usage is extremely high",
+        "source": "Server monitoring",
+        "source_id": "SRV001",
+        "reliability": 0.95
+      },
+      {
+        "id": "E2",
+        "description": "Server memory usage is extremely high",
+        "source": "Server monitoring",
+        "source_id": "SRV002",
+        "reliability": 0.9
+      }
+    ]
+  },
+
+  {
+    "case_id": "TC004",
+    "problem": "The application cannot retrieve customer information.",
+    "expected_cause": "External API failure",
+    "evidence": [
+      {
+        "id": "E1",
+        "description": "External API health check failed",
+        "source": "API monitoring",
+        "source_id": "API001",
+        "reliability": 0.95
+      },
+      {
+        "id": "E2",
+        "description": "Database health check is normal",
+        "source": "Database monitoring",
+        "source_id": "DB001",
+        "reliability": 0.9
+      }
+    ]
+  },
+
+  {
+    "case_id": "TC005",
+    "problem": "The application fails to start after moving to a new environment.",
+    "expected_cause": "Configuration/environment problem",
+    "evidence": [
+      {
+        "id": "E1",
+        "description": "Environment configuration is incorrect",
+        "source": "Configuration system",
+        "source_id": "CFG001",
+        "reliability": 0.95
+      },
+      {
+        "id": "E2",
+        "description": "Database health check is normal",
+        "source": "Database monitoring",
+        "source_id": "DB001",
+        "reliability": 0.8
+      }
+    ]
+  }
+]
