@@ -179,3 +179,18 @@ def assess_evidence(
         evidence_type=EvidenceType.MISSING,
         explanation="The available evidence does not provide enough information to evaluate this hypothesis."
     )
+
+def check_evidence_dependency(
+    evidence_1: Evidence,
+    evidence_2: Evidence
+) -> bool:
+    """
+    Check whether two evidence items come from
+    the same original source.
+
+    Returns:
+        True  -> evidence is dependent
+        False -> evidence is potentially independent
+    """
+
+    return evidence_1.source_id == evidence_2.source_id
