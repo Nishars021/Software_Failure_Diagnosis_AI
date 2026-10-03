@@ -124,24 +124,24 @@ def diagnose(problem, evidence_list):
     # 8. Synthesize hypotheses if requested
     # --------------------------------------------------
     if (
-    decision.outcome == "COMBINE"
-    and len(decision.selected_hypotheses) >= 2
-):
+        decision.outcome == "COMBINE"
+        and len(decision.selected_hypotheses) >= 2
+   ):
 
-    h1 = next(
-        h for h in hypotheses
-        if h.id == decision.selected_hypotheses[0]
-    )
+        h1 = next(
+            h for h in hypotheses
+            if h.id == decision.selected_hypotheses[0]
+        )
 
-    h2 = next(
-        h for h in hypotheses
-        if h.id == decision.selected_hypotheses[1]
-    )
+        h2 = next(
+            h for h in hypotheses
+            if h.id == decision.selected_hypotheses[1]
+        )
 
-    score_map = {
-        score.hypothesis_id: score
-        for score in all_scores
-    }
+        score_map = {
+            score.hypothesis_id: score
+            for score in all_scores
+        }
 
     score1 = score_map[h1.id]
     score2 = score_map[h2.id]
