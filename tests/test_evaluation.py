@@ -17,6 +17,7 @@ def run_evaluation():
     total = len(cases)
     correct = 0
     abstained = 0
+    selective_correct = 0
 
     results = []
     calibration_predictions = []
@@ -92,6 +93,9 @@ def run_evaluation():
         
         if is_correct:
             correct += 1
+
+            if predicted is not None:
+                selective_correct += 1
 
         if decision.outcome == "ABSTAIN":
             abstained += 1
