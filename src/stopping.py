@@ -64,8 +64,8 @@ def should_stop(
         ) <= 10:
 
             return True, (
-                "Top hypotheses remain difficult "
-                "to distinguish."
+                "Top hypotheses are sufficiently close; "
+                "move to synthesis or a discriminating test."
             )
 
     # 7. Continue investigation

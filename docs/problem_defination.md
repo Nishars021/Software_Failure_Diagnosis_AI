@@ -1,38 +1,99 @@
 # Problem Definition
 
-## Domain
-Software Failure Diagnosis
+## 1. Problem
 
-## Problem
+Software failures can occur because of several different underlying causes. A single observed symptom may therefore correspond to multiple plausible explanations.
 
-Software applications can fail or experience performance problems for many different reasons. A single failure may have multiple plausible causes, and choosing one explanation too early can lead to incorrect diagnosis.
+The goal of Software Failure Diagnosis AI is to determine the most plausible cause of a software failure while explicitly handling uncertainty and alternative explanations.
 
-## Goal
+## 2. Input
 
-Build an evidence-grounded reasoning system that investigates software failures by generating genuinely different possible causes, evaluating
-evidence for and against each hypothesis, identifying missing information, and recommending further diagnostic actions when the available evidence is insufficient.
+The system receives:
 
-## Initial Failure Types
+- A description of the software failure.
+- A collection of observed evidence.
+- Evidence provenance and reliability information.
 
-The first prototype will focus on:
+## 3. Possible Causes
 
-- HTTP 500 errors
-- Application crashes
-- Slow application response
-- Database-related failures
-- External API failures
+The current diagnostic system considers the following major causes:
 
-## Initial Example
+1. Database failure
+2. Recent software deployment
+3. Server/resource problem
+4. External API failure
+5. Configuration/environment problem
+6. UNKNOWN when the available evidence is insufficient
 
-Problem:
+## 4. Diagnostic Requirements
 
-"The web application suddenly started returning HTTP 500 errors."
+The system should:
 
-Possible causes may include:
+- Generate multiple alternative hypotheses.
+- Ensure that hypotheses are meaningfully distinct.
+- Represent assumptions and predicted effects.
+- Evaluate evidence against each hypothesis.
+- Distinguish supporting and contradicting evidence.
+- Identify missing evidence.
+- Avoid double-counting dependent evidence.
+- Calculate confidence for each hypothesis.
+- Select a leading hypothesis when evidence is sufficiently strong.
+- Recommend a discriminating test when leading hypotheses remain close.
+- Combine compatible hypotheses when multiple causes may contribute.
+- Abstain when available evidence is insufficient.
+- Operate within a defined investigation budget.
 
-- Database failure
-- Recent software deployment
-- Server/resource problem
-- External API failure
-- Configuration/environment problem
-- Unknown cause
+## 5. Output
+
+The diagnostic engine produces one of the following outcomes:
+
+### SELECT
+
+A sufficiently supported hypothesis is selected.
+
+### COMBINE
+
+Two compatible hypotheses with sufficient supporting evidence are combined into a joint explanation.
+
+### TEST
+
+The leading hypotheses remain difficult to distinguish, so an additional diagnostic test is recommended.
+
+### ABSTAIN / UNKNOWN
+
+The evidence is insufficient to confidently identify a known cause.
+
+## 6. Constraints
+
+The system uses a bounded investigation process.
+
+The investigation is limited by:
+
+- Maximum number of hypotheses
+- Maximum investigation rounds
+- Maximum evidence checks
+
+This prevents unlimited exploration and provides a defined stopping condition.
+
+## 7. Unknown-Cause Handling
+
+The system must not force every failure into one of the predefined causes.
+
+If the evidence does not sufficiently support a known hypothesis, the system can return UNKNOWN or abstain.
+
+This is important for failures that fall outside the current hypothesis space.
+
+## 8. Objective
+
+The overall objective is to build a structured diagnostic reasoning system that can:
+
+```text
+Failure
+   ↓
+Alternative Hypotheses
+   ↓
+Evidence Evaluation
+   ↓
+Confidence Scoring
+   ↓
+Decision / Test / Synthesis / Abstention
