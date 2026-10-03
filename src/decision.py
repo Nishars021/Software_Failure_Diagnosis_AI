@@ -126,6 +126,31 @@ def make_decision(
 
         if difference <= 10:
 
+            # If actual hypothesis objects are available,
+            # check whether the two explanations can coexist.
+            if hypotheses:
+
+                hypothesis_map = {
+                    h.id: h
+                    for h in hypotheses
+                }
+
+                h1 = hypothesis_map.get(best.hypothesis_id)
+                h2 = hypothesis_map.get(second.hypothesis_id)
+
+                if h1 is not None and h2 is not None:
+
+                   synthesis_decision = synthesize_hypotheses(
+                       h1,
+                       h2,
+                       best,
+                       second
+                    )
+
+                if synthesis_decision.outcome == "COMBINE":
+                       return synthesis_decision
+
+            # Otherwise, recommend a discriminating test.
             return Decision(
                 outcome="TEST",
                 selected_hypotheses=[
