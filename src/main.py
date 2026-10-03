@@ -146,26 +146,26 @@ def diagnose(problem, evidence_list):
         score1 = score_map[h1.id]
         score2 = score_map[h2.id]
 
-    combined = combine_hypotheses(
-        h1,
-        h2,
-        score1,
-        score2
-    )
+        combined = combine_hypotheses(
+            h1,
+            h2,
+            score1,
+            score2
+        )
 
-    if combined is not None:
+        if combined is not None:
 
-        print("\nSynthesized Hypothesis:")
-        print(f"ID: {combined.id}")
-        print(f"Cause: {combined.cause}")
+            print("\nSynthesized Hypothesis:")
+            print(f"ID: {combined.id}")
+            print(f"Cause: {combined.cause}")
 
-        print("Assumptions:")
-        for item in combined.assumptions:
-            print(f"- {item}")
-
-        print("Predicted effects:")
-        for item in combined.predicted_effects:
-            print(f"- {item}")
+            print("Assumptions:")
+            for item in combined.assumptions:
+                print(f"- {item}")
+ 
+            print("Predicted effects:")
+            for item in combined.predicted_effects:
+                print(f"- {item}")
 
         print("Required evidence:")
         for item in combined.required_evidence:
