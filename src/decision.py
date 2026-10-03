@@ -73,19 +73,31 @@ def make_decision(
     # CASE 2: Strong single hypothesis
     # --------------------------------------------------
 
-    if best.confidence >= 75:
+    if best.confidence >= 50:
 
         if len(ranked) == 1:
-
             return Decision(
                 outcome="SELECT",
                 selected_hypotheses=[best.hypothesis_id],
                 explanation=(
-                    f"{best.hypothesis_id} has strong supporting "
-                    f"evidence with {best.confidence:.2f}% confidence."
+                    f"{best.hypothesis_id} has sufficient supporting "
+                    f"evidence and no competing hypothesis has comparable support."
                 )
             )
 
+        second = ranked[1]
+
+        margin = best.confidence - second.confidence
+
+        if margin >= 15:
+            return Decision(
+                outcome="SELECT",
+                selected_hypotheses=[best.hypothesis_id],
+                explanation=(
+                    f"{best.hypothesis_id} has the strongest evidence "
+                    f"with a confidence margin of {margin:.2f} points."
+                )
+            )
         second = ranked[1]
 
         if best.confidence - second.confidence >= 15:

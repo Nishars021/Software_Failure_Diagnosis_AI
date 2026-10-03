@@ -29,7 +29,7 @@ def diagnose(problem, evidence_list):
     budget = InvestigationBudget(
         max_hypotheses=6,
         max_rounds=3,
-        max_evidence_checks=10
+        max_evidence_checks=30
     )
 
     budget.add_hypotheses(len(hypotheses))
