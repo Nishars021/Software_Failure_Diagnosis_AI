@@ -121,9 +121,9 @@ def diagnose(problem, evidence_list):
     print(f"Explanation: {decision.explanation}")
 
     # --------------------------------------------------
-# 8. Synthesize hypotheses if requested
-# --------------------------------------------------
-if (
+    # 8. Synthesize hypotheses if requested
+    # --------------------------------------------------
+    if (
     decision.outcome == "COMBINE"
     and len(decision.selected_hypotheses) >= 2
 ):
