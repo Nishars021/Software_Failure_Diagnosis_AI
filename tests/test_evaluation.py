@@ -120,14 +120,14 @@ def run_evaluation():
     abstention_rate = (abstained / total) * 100
 
     # Selective accuracy
-    non_abstained = total - abstained
+    non_abstained_cases = total - abstained
 
-    if non_abstained > 0:
+    if non_abstained_cases > 0:
         selective_accuracy = (
-            correct / non_abstained
+            selective_correct / non_abstained_cases
         ) * 100
     else:
-        selective_accuracy = 0
+        selective_accuracy = 0.0
 
     # Brier score
     brier_score = calculate_brier_score(
