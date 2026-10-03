@@ -12,7 +12,8 @@ class Decision:
 
 
 def make_decision(
-    scores: List[HypothesisScore]
+    scores: List[HypothesisScore],
+    hypotheses=None
 ) -> Decision:
 
     if not scores:
