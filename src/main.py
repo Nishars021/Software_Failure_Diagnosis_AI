@@ -6,6 +6,7 @@ from src.budget import InvestigationBudget
 from src.decision import make_decision
 from src.test_recommender import recommend_discriminating_test
 from src.hypothesis_validator import validate_hypotheses
+from src.synthesis import combine_hypotheses
 
 
 def diagnose(problem, evidence_list):
@@ -112,7 +113,7 @@ def diagnose(problem, evidence_list):
     # --------------------------------------------------
     # 7. Decision
     # --------------------------------------------------
-    decision = make_decision(all_scores)
+    decision = make_decision(all_scores,hypotheses)
 
     print("\nDecision:")
     print(f"Outcome: {decision.outcome}")
@@ -120,7 +121,58 @@ def diagnose(problem, evidence_list):
     print(f"Explanation: {decision.explanation}")
 
     # --------------------------------------------------
-    # 8. Recommend diagnostic test if necessary
+# 8. Synthesize hypotheses if requested
+# --------------------------------------------------
+if (
+    decision.outcome == "COMBINE"
+    and len(decision.selected_hypotheses) >= 2
+):
+
+    h1 = next(
+        h for h in hypotheses
+        if h.id == decision.selected_hypotheses[0]
+    )
+
+    h2 = next(
+        h for h in hypotheses
+        if h.id == decision.selected_hypotheses[1]
+    )
+
+    score_map = {
+        score.hypothesis_id: score
+        for score in all_scores
+    }
+
+    score1 = score_map[h1.id]
+    score2 = score_map[h2.id]
+
+    combined = combine_hypotheses(
+        h1,
+        h2,
+        score1,
+        score2
+    )
+
+    if combined is not None:
+
+        print("\nSynthesized Hypothesis:")
+        print(f"ID: {combined.id}")
+        print(f"Cause: {combined.cause}")
+
+        print("Assumptions:")
+        for item in combined.assumptions:
+            print(f"- {item}")
+
+        print("Predicted effects:")
+        for item in combined.predicted_effects:
+            print(f"- {item}")
+
+        print("Required evidence:")
+        for item in combined.required_evidence:
+            print(f"- {item}")
+
+    # --------------------------------------------------
+    # 9. Recommend diagnostic test if necessary
     # --------------------------------------------------
     if decision.outcome == "TEST" and len(decision.selected_hypotheses) >= 2:
 
