@@ -143,8 +143,8 @@ def diagnose(problem, evidence_list):
             for score in all_scores
         }
 
-    score1 = score_map[h1.id]
-    score2 = score_map[h2.id]
+        score1 = score_map[h1.id]
+        score2 = score_map[h2.id]
 
     combined = combine_hypotheses(
         h1,
