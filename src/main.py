@@ -5,6 +5,7 @@ from src.stopping import should_stop
 from src.budget import InvestigationBudget
 from src.decision import make_decision
 from src.test_recommender import recommend_discriminating_test
+from src.hypothesis_validator import validate_hypotheses
 
 
 def diagnose(problem, evidence_list):
@@ -24,7 +25,16 @@ def diagnose(problem, evidence_list):
         print(f"- {h.id}: {h.cause}")
 
     # --------------------------------------------------
-    # 2. Create investigation budget
+    # 2. Validate hypotheses
+    # --------------------------------------------------
+    hypotheses = validate_hypotheses(hypotheses)
+
+    print("\nValidated Hypotheses:")
+    for h in hypotheses:
+        print(f"- {h.id}: {h.cause}")
+
+    # --------------------------------------------------
+    # 3. Create investigation budget
     # --------------------------------------------------
     budget = InvestigationBudget(
         max_hypotheses=6,
@@ -141,3 +151,25 @@ def diagnose(problem, evidence_list):
             "reason": reason
         }
     }
+
+if __name__ == "__main__":
+    problem = "The web application suddenly started returning HTTP 500 errors."
+
+    evidence_list = [
+        Evidence(
+            id="E1",
+            description="Database connection timeout detected",
+            source="Application logs",
+            source_id="LOG001",
+            reliability=0.9
+        ),
+        Evidence(
+            id="E2",
+            description="Database health check is normal",
+            source="Database monitoring",
+            source_id="DB001",
+            reliability=0.8
+        )
+    ]
+
+    diagnose(problem, evidence_list)
