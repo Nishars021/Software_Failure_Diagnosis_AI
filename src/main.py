@@ -167,9 +167,9 @@ def diagnose(problem, evidence_list):
             for item in combined.predicted_effects:
                 print(f"- {item}")
 
-        print("Required evidence:")
-        for item in combined.required_evidence:
-            print(f"- {item}")
+            print("Required evidence:")
+            for item in combined.required_evidence:
+                print(f"- {item}")
 
     # --------------------------------------------------
     # 9. Recommend diagnostic test if necessary
