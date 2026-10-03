@@ -55,6 +55,17 @@ def run_evaluation():
 
         expected = case["expected_cause"]
 
+        expected_mapping = {
+            "Database failure": "H1",
+            "Recent software deployment": "H2",
+            "Server/resource problem": "H3",
+            "External API failure": "H4",
+            "Configuration/environment problem": "H5",
+            "UNKNOWN": "UNKNOWN"
+}
+
+        expected = expected_mapping.get(expected, expected)
+
         if expected == "UNKNOWN":
             is_correct = (
                 predicted is None
